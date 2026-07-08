@@ -30,12 +30,15 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Categoría</label>
-                            <select class="form-select" th:field="*{idCategoria}" required>
-                                <option value="">-- Seleccione --</option>
-                                <option th:each="c : ${categorias}"
+
+                                <select class="form-select" th:field="*{categoria.idCategoria}" required>
+                                    <option value="">-- Seleccione --</option>
+                                    <option th:each="c : ${categorias}"
                                         th:value="${c.idCategoria}"
-                                        th:text="${c.descripcion}"></option>
-                            </select>
+                                        th:text="${c.descripcion}">
+                                    </option>
+                                </select>
+
                         </div>
 
                         <div class="mb-3">
@@ -134,11 +137,11 @@
                                 <span th:if="${prod.rutaImagen == null or #strings.isEmpty(prod.rutaImagen)}"
                                       class="text-muted">Sin imagen</span>
                             </td>
-                            <td>
-                                <span th:each="c : ${categorias}"
-                                      th:if="${c.idCategoria == prod.idCategoria}"
-                                      th:text="${c.descripcion}">Categoría</span>
+                            
+                            <td th:text="${prod.categoria.descripcion}">
+                                Categoría
                             </td>
+
                             <td>
                                 <span th:if="${prod.activo}" class="badge bg-success">Activo</span>
                                 <span th:unless="${prod.activo}" class="badge bg-secondary">Inactivo</span>
@@ -207,11 +210,12 @@
 
                     <div class="mb-3">
                         <label class="form-label">Categoría</label>
-                        <select class="form-select" th:field="*{idCategoria}" required>
-                            <option th:each="c : ${categorias}"
+                            <select class="form-select" th:field="*{categoria.idCategoria}" required>
+                                <option th:each="c : ${categorias}"
                                     th:value="${c.idCategoria}"
-                                    th:text="${c.descripcion}"></option>
-                        </select>
+                                    th:text="${c.descripcion}">
+                                    </option>
+                            </select>
                     </div>
 
                     <div class="mb-3">

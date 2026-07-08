@@ -64,7 +64,7 @@ public class ProductoService {
             if (prodOpt.isPresent() && prodOpt.get().getRutaImagen() != null) {
                 try {
                     cloudinaryService.eliminarImagen(prodOpt.get().getRutaImagen());
-                } catch (IOException e) {
+                } catch (IOException e){
                     System.err.println("No se pudo eliminar la imagen: " + e.getMessage());
                 }
             }
@@ -73,4 +73,10 @@ public class ProductoService {
             throw new IllegalStateException("No se puede eliminar el producto. Tiene datos asociados.", e);
         }
     }
+    
+    @Transactional(readOnly = true)
+        public List<Producto> getProductosPorCategoria(Integer idCategoria) {
+        return productoRepository.findByCategoriaIdCategoria(idCategoria);
+    }
+    
 }
