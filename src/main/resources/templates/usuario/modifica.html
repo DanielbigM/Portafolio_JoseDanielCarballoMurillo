@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TechShop - Modificar Usuario</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body class="container mt-4">
+
+    <h2>Modificar Usuario</h2>
+
+    <form th:action="@{/usuario/guardar}" th:object="${usuario}" method="POST" enctype="multipart/form-data" class="col-md-6 mt-3">
+        <input type="hidden" th:field="*{idUsuario}"/>
+        <input type="hidden" th:field="*{rutaImagen}"/>
+
+        <div class="mb-3">
+            <label class="form-label">Nombre de Usuario:</label>
+            <input type="text" class="form-control" th:field="*{username}" required="true"/>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nombre:</label>
+            <input type="text" class="form-control" th:field="*{nombre}"/>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Apellidos:</label>
+            <input type="text" class="form-control" th:field="*{apellidos}"/>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Correo Electrónico:</label>
+            <input type="email" class="form-control" th:field="*{correo}"/>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Contraseña (dejar en blanco para no cambiar):</label>
+            <input type="password" class="form-control" th:field="*{password}"/>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Imagen de Perfil:</label>
+            <input type="file" name="imagenFile" class="form-control" accept="image/*"/>
+        </div>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" th:field="*{activo}" id="activo"/>
+            <label class="form-check-label" for="activo">Usuario Activo</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <a th:href="@{/usuario/listado}" class="btn btn-secondary">Cancelar</a>
+    </form>
+
+</body>
+</html>

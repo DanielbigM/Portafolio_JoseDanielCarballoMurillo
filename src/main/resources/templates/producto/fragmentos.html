@@ -128,7 +128,7 @@
                             </td>
                             <td class="text-center" th:text="${prod.existencias}">0</td>
                             <td class="text-end"
-                                th:text="${'₡' + #numbers.formatDecimal(prod.precio.multiply(new java.math.BigDecimal(prod.existencias)), 1, 'COMMA', 2, 'POINT')}">
+                                th:text="${prod.precio != null and prod.existencias != null ? '₡' + #numbers.formatDecimal(prod.precio * prod.existencias, 1, 'COMMA', 2, 'POINT') : '₡0.00'}">
                                 $0.00
                             </td>
                             <td>

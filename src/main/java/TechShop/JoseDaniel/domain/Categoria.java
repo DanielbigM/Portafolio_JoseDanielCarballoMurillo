@@ -1,17 +1,13 @@
 package TechShop.JoseDaniel.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import lombok.Data;
 import java.util.List;
-import jakarta.persistence.OneToMany;
+import lombok.Data;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
@@ -29,8 +25,10 @@ public class Categoria implements Serializable {
     @NotNull
     @Size(max = 50)
     private String descripcion;
-    
+
     @OneToMany(mappedBy = "categoria")
+    @ToString.Exclude // Evita la recursión infinita en toString()
+    @EqualsAndHashCode.Exclude // Evita ciclos en hashCode
     private List<Producto> productos;
 
     @Column(length = 1024)

@@ -47,7 +47,7 @@ public class ConsultasController {
             "productos",
             productoService.getProductos(true)
     );
-    return "/consultas/listado";
+    return "consultas/listado";
     }
     
     @PostMapping("/consultaDerivada")
@@ -64,7 +64,7 @@ public class ConsultasController {
     model.addAttribute("precioInf", precioInf);
     model.addAttribute("precioSup", precioSup);
 
-    return "/consultas/listado";
+    return "consultas/listado";
     }
     
     @PostMapping("/consultaJPQL")
@@ -79,7 +79,7 @@ public class ConsultasController {
     model.addAttribute("precioInf", precioInf);
     model.addAttribute("precioSup", precioSup);
 
-    return "/consultas/listado";
+    return "consultas/listado";
     }
     
     @PostMapping("/consultaSQL")
@@ -94,7 +94,7 @@ public class ConsultasController {
     model.addAttribute("precioInf", precioInf);
     model.addAttribute("precioSup", precioSup);
 
-    return "/consultas/listado";
+    return "consultas/listado";
     }
     
 }

@@ -39,7 +39,7 @@ public class CategoriaController {
         model.addAttribute("categorias", categorias);
         model.addAttribute("totalCategorias", categorias.size());
         model.addAttribute("categoria", new Categoria());
-        return "/categoria/listado";
+        return "categoria/listado";
     }
 
     /**
@@ -115,6 +115,6 @@ public class CategoriaController {
         }
 
         model.addAttribute("categoria", categoriaOpt.get());
-        return "/categoria/modifica";
+        return "categoria/modifica";
     }
 }
