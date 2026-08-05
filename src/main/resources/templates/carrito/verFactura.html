@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}">
+        <title>TechShop - Factura</title>
+    </head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"></header>
+
+        <section class="container my-5">
+            <div class="card p-4 shadow-sm">
+                <!-- Encabezado de Factura -->
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                    <div>
+                        <h2 class="text-primary mb-0">TechShop</h2>
+                        <span class="text-muted">Comprobante Electrónico</span>
+                    </div>
+                    <div class="text-end">
+                        <h4>Factura N°: <span th:text="${factura.idFactura}">001</span></h4>
+                        <span class="badge bg-success" th:text="${factura.estado}">PAGADA</span>
+                    </div>
+                </div>
+
+                <!-- Información del Cliente y Fecha -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong>Cliente:</strong> <span th:text="${factura.usuario.nombre + ' ' + factura.usuario.apellidos}">Nombre Cliente</span></p>
+                        <p class="mb-1"><strong>Correo:</strong> <span th:text="${factura.usuario.correo}">correo@ejemplo.com</span></p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p class="mb-1"><strong>Fecha de Emisión:</strong> <span th:text="${#temporals.format(factura.fecha, 'dd/MM/yyyy HH:mm')}">01/01/2026</span></p>
+                    </div>
+                </div>
+
+                <!-- Detalle de Ventas -->
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Producto</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-end">Precio Unitario</th>
+                                <th class="text-end">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="venta : ${factura.ventas}">
+                                <td th:text="${venta.producto.descripcion}">Producto</td>
+                                <td class="text-center" th:text="${venta.cantidad}">1</td>
+                                <td class="text-end" th:text="${'₡' + #numbers.formatDecimal(venta.precioHistorico, 1, 'POINT', 2, 'COMMA')}">₡0.00</td>
+                                <td class="text-end" th:text="${'₡' + #numbers.formatDecimal(venta.precioHistorico * venta.cantidad, 1, 'POINT', 2, 'COMMA')}">₡0.00</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end fw-bold fs-5">Total Pagado:</td>
+                                <td class="text-end fw-bold fs-5 text-success" th:text="${'₡' + #numbers.formatDecimal(factura.total, 1, 'POINT', 2, 'COMMA')}">₡0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="d-flex justify-content-between align-items-center mt-4 no-print">
+                    <a th:href="@{/}" class="btn btn-secondary">
+                        <i class="fas fa-home me-1"></i>Volver al Inicio
+                    </a>
+                    <button onclick="window.print()" class="btn btn-primary">
+                        <i class="fas fa-print me-1"></i>Imprimir Factura
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>

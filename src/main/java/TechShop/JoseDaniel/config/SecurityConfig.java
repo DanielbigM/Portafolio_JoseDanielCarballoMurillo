@@ -36,9 +36,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Desactiva la protección CSRF temporalmente para evitar el 403 en formularios
-                .authorizeHttpRequests((request) -> request
-                .anyRequest().permitAll() // Permite el acceso libre a absolutamente TODAS las rutas
+                .authorizeHttpRequests((requests) -> requests
+                // Permitir recursos estáticos y rutas de login / registro
+                .requestMatchers("/login", "/registro/**", "/webjars/**", "/css/**", "/js/**").permitAll()
+                .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                 .loginPage("/login")

@@ -2,269 +2,280 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<body>
+    <body>
 
-    <!-- Fragmento Tabs -->
-    <section th:fragment="tabs" class="py-3 mb-4">
+        <!-- Fragmento Tabs -->
+        <section th:fragment="tabs" class="py-3 mb-4">
 
-        <div class="d-flex justify-content-center px-5">
+            <div class="d-flex justify-content-center px-5">
 
-            <ul class="nav nav-underline">
+                <ul class="nav nav-underline">
 
-                <!-- Botón de "Todas" -->
-                <li class="nav-item">
-                    <a th:href="@{/}" class="nav-link">
-                        Todas
-                    </a>
-                </li>
+                    <!-- Botón de "Todas" -->
+                    <li class="nav-item">
+                        <a th:href="@{/}" class="nav-link">
+                            Todas
+                        </a>
+                    </li>
 
-                <!-- Botones dinámicos de Categorías -->
-                <li th:each="c : ${categorias}" class="nav-item">
-                    <a th:href="@{/consultas/categoria/{id}(id=${c.idCategoria})}" class="nav-link">
-                        <span th:text="${c.descripcion}">
-                            Categoría
-                        </span>
-                    </a>
-                </li>
-
-            </ul>
-
-        </div>
-
-    </section>
-    
-<section th:fragment="consultas">
-
-    <div class="container mt-4">
-
-        <div class="row g-4">
-
-            <!-- ===== TARJETA AZUL: Consulta Derivada ===== -->
-            <div class="col-md-4">
-
-                <div class="card h-100">
-
-                    <div class="card-header bg-primary text-white text-center">
-                        <strong>Consultas Derivadas</strong>
-                    </div>
-
-                    <div class="card-body">
-
-                        <form th:action="@{/consultas/consultaDerivada}" method="post">
-
-                            <div class="mb-3">
-                                <label>Precio Inferior</label>
-                                <input type="number"
-                                       name="precioInf"
-                                       class="form-control"
-                                       step="0.01"
-                                       required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label>Precio Superior</label>
-                                <input type="number"
-                                       name="precioSup"
-                                       class="form-control"
-                                       step="0.01"
-                                       required>
-                            </div>
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-search"></i> Consultas Derivadas
-                                </button>
-                            </div>
-
-                        </form>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- ===== TARJETA AMARILLA: Consulta JPQL ===== -->
-            <div class="col-md-4">
-
-                <div class="card h-100">
-
-                    <div class="card-header bg-warning text-dark text-center">
-                        <strong>Consultas JPQL</strong>
-                    </div>
-
-                    <div class="card-body">
-
-                        <form th:action="@{/consultas/consultaJPQL}" method="post">
-
-                            <div class="mb-3">
-                                <label>Precio Inferior</label>
-                                <input type="number"
-                                       name="precioInf"
-                                       class="form-control"
-                                       step="0.01"
-                                       required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label>Precio Superior</label>
-                                <input type="number"
-                                       name="precioSup"
-                                       class="form-control"
-                                       step="0.01"
-                                       required>
-                            </div>
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-warning">
-                                    <i class="bi bi-search"></i> Consultas JPQL
-                                </button>
-                            </div>
-
-                        </form>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- ===== TARJETA VERDE: Consulta SQL Nativa ===== -->
-            <div class="col-md-4">
-
-                <div class="card h-100">
-
-                    <div class="card-header bg-success text-white text-center">
-                        <strong>Consultas SQL</strong>
-                    </div>
-
-                    <div class="card-body">
-
-                        <form th:action="@{/consultas/consultaSQL}" method="post">
-
-                            <div class="mb-3">
-                                <label>Precio Inferior</label>
-                                <input type="number"
-                                       name="precioInf"
-                                       class="form-control"
-                                       step="0.01"
-                                       required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label>Precio Superior</label>
-                                <input type="number"
-                                       name="precioSup"
-                                       class="form-control"
-                                       step="0.01"
-                                       required>
-                            </div>
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-search"></i> Consultas SQL
-                                </button>
-                            </div>
-
-                        </form>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div> <!-- Cierre del row -->
-
-    </div> <!-- Cierre del container -->
-
-</section>
-    
-    <section th:fragment="resultados">
-        <div class="container mt-4">
-            <div class="card">
-                <div class="card-header bg-success text-white">
-                    Resultados
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Precio</th>
-                                <th>Existencias</th>
-                            </tr>
-
-                        </thead>
-                        <tbody>
-                            <tr th:each="p : ${productos}">
-                                <td th:text="${p.descripcion}">
-                                    Producto
-                                </td>
-                                <td th:text="${p.precio}">
-                                    0
-                                </td>
-                                <td th:text="${p.existencias}">
-                                    0
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Fragmento Tarjetas -->
-    <section th:fragment="tarjetas" class="container py-4">
-
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-
-            <div th:each="p : ${productos}" class="col">
-
-                <div class="card h-100 shadow-sm">
-
-                    <!-- CONTENEDOR DE IMAGEN CORREGIDO -->
-                    <div class="d-flex justify-content-center align-items-center bg-light p-3"
-                         style="height: 200px;">
-                        <img th:src="${p.rutaImagen}" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="Producto">
-                    </div>
-
-                    <div class="card-header bg-white">
-                        <h5 class="card-title text-center mb-0"
-                            th:text="${p.descripcion}">
-                            Producto
-                        </h5>
-                    </div>
-
-                    <div class="card-body">
-
-                        <p class="card-text text-muted"
-                           th:text="${p.detalle}">
-                            Detalle
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer bg-white">
-
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <span class="fw-bold text-success"
-                                  th:text="${'₡' + #numbers.formatDecimal(p.precio,1,'COMMA',2,'POINT')}">
-                                ₡0.00
+                    <!-- Botones dinámicos de Categorías -->
+                    <li th:each="c : ${categorias}" class="nav-item">
+                        <a th:href="@{/consultas/categoria/{id}(id=${c.idCategoria})}" class="nav-link">
+                            <span th:text="${c.descripcion}">
+                                Categoría
                             </span>
+                        </a>
+                    </li>
 
-                            <span th:if="${p.existencias > 0}"
-                                  class="badge bg-success"
-                                  th:text="${p.existencias + ' disponibles'}">
-                                Stock
-                            </span>
+                </ul>
 
-                            <span th:unless="${p.existencias > 0}"
-                                  class="badge bg-danger">
-                                Agotado
-                            </span>
+            </div>
+
+        </section>
+
+        <section th:fragment="consultas">
+
+            <div class="container mt-4">
+
+                <div class="row g-4">
+
+                    <!-- ===== TARJETA AZUL: Consulta Derivada ===== -->
+                    <div class="col-md-4">
+
+                        <div class="card h-100">
+
+                            <div class="card-header bg-primary text-white text-center">
+                                <strong>Consultas Derivadas</strong>
+                            </div>
+
+                            <div class="card-body">
+
+                                <form th:action="@{/consultas/consultaDerivada}" method="post">
+
+                                    <div class="mb-3">
+                                        <label>Precio Inferior</label>
+                                        <input type="number"
+                                               name="precioInf"
+                                               class="form-control"
+                                               step="0.01"
+                                               required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Precio Superior</label>
+                                        <input type="number"
+                                               name="precioSup"
+                                               class="form-control"
+                                               step="0.01"
+                                               required>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-search"></i> Consultas Derivadas
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ===== TARJETA AMARILLA: Consulta JPQL ===== -->
+                    <div class="col-md-4">
+
+                        <div class="card h-100">
+
+                            <div class="card-header bg-warning text-dark text-center">
+                                <strong>Consultas JPQL</strong>
+                            </div>
+
+                            <div class="card-body">
+
+                                <form th:action="@{/consultas/consultaJPQL}" method="post">
+
+                                    <div class="mb-3">
+                                        <label>Precio Inferior</label>
+                                        <input type="number"
+                                               name="precioInf"
+                                               class="form-control"
+                                               step="0.01"
+                                               required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Precio Superior</label>
+                                        <input type="number"
+                                               name="precioSup"
+                                               class="form-control"
+                                               step="0.01"
+                                               required>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-warning">
+                                            <i class="bi bi-search"></i> Consultas JPQL
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ===== TARJETA VERDE: Consulta SQL Nativa ===== -->
+                    <div class="col-md-4">
+
+                        <div class="card h-100">
+
+                            <div class="card-header bg-success text-white text-center">
+                                <strong>Consultas SQL</strong>
+                            </div>
+
+                            <div class="card-body">
+
+                                <form th:action="@{/consultas/consultaSQL}" method="post">
+
+                                    <div class="mb-3">
+                                        <label>Precio Inferior</label>
+                                        <input type="number"
+                                               name="precioInf"
+                                               class="form-control"
+                                               step="0.01"
+                                               required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Precio Superior</label>
+                                        <input type="number"
+                                               name="precioSup"
+                                               class="form-control"
+                                               step="0.01"
+                                               required>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="bi bi-search"></i> Consultas SQL
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div> <!-- Cierre del row -->
+
+            </div> <!-- Cierre del container -->
+
+        </section>
+
+        <section th:fragment="resultados">
+            <div class="container mt-4">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        Resultados
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Existencias</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr th:each="p : ${productos}">
+                                    <td th:text="${p.descripcion}">
+                                        Producto
+                                    </td>
+                                    <td th:text="${p.precio}">
+                                        0
+                                    </td>
+                                    <td th:text="${p.existencias}">
+                                        0
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fragmento Tarjetas -->
+        <section th:fragment="tarjetas" class="container py-4">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+
+                <div th:each="p : ${productos}" class="col">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <!-- CONTENEDOR DE IMAGEN CORREGIDO -->
+                        <div class="d-flex justify-content-center align-items-center bg-light p-3"
+                             style="height: 200px;">
+                            <img th:src="${p.rutaImagen}" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="Producto">
+                        </div>
+
+                        <div class="card-header bg-white">
+                            <h5 class="card-title text-center mb-0"
+                                th:text="${p.descripcion}">
+                                Producto
+                            </h5>
+                        </div>
+
+                        <div class="card-body">
+
+                            <p class="card-text text-muted"
+                               th:text="${p.detalle}">
+                                Detalle
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer bg-white">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <span class="fw-bold text-success"
+                                      th:text="${'₡' + #numbers.formatDecimal(p.precio,1,'COMMA',2,'POINT')}">
+                                    ₡0.00
+                                </span>
+
+                                <span th:if="${p.existencias > 0}"
+                                      class="badge bg-success"
+                                      th:text="${p.existencias + ' disponibles'}">
+                                    Stock
+                                </span>
+
+                                <span th:unless="${p.existencias > 0}"
+                                      class="badge bg-danger">
+                                    Agotado
+                                </span>
+
+                            </div>
+
+                            <form th:action="@{/carrito/agregar}" method="POST">
+                                <input type="hidden" name="idProducto" th:value="${p.idProducto}"/>
+                                <button class="btn btn-primary btn-sm mt-2" 
+                                        type="button" 
+                                        onclick="addCart(this.form)">
+                                    <i class="fas fa-cart-plus"></i> Agregar
+                                </button>
+                            </form>
 
                         </div>
 
@@ -274,9 +285,7 @@
 
             </div>
 
-        </div>
+        </section>
 
-    </section>
-
-</body>
+    </body>
 </html>

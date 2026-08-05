@@ -1,31 +1,52 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Login - TechShop</title>
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Login - TechShop</title>
+        <!-- Incluimos Bootstrap para darle formato al formulario -->
+        <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link th:href="@{/webjars/font-awesome/css/all.css}" rel="stylesheet"/>
+    </head>
+    <body class="bg-light">
 
-    <h1>Login TechShop</h1>
+        <div class="container d-flex justify-content-center align-items-center vh-100">
+            <div class="card shadow p-4" style="width: 400px;">
+                <h2 class="text-center mb-4">Login TechShop</h2>
 
-    <!-- Se abre la etiqueta form y se asigna la ruta de Thymeleaf correctamente -->
-    <form th:action="@{/login}" method="POST">
-        
-        <label for="username">Usuario:</label>
-        <input type="text" id="username" name="username" required>
+                <!-- Formulario de Inicio de Sesión de Spring Security -->
+                <form th:action="@{/login}" method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Usuario:</label>
+                        <input type="text" id="username" name="username" class="form-control" required/>
+                    </div>
 
-        <br><br>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña:</label>
+                        <input type="password" id="password" name="password" class="form-control" required/>
+                    </div>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Ingresar</button>
+                    </div>
+                </form>
 
-        <br><br>
+                <hr class="my-4"/>
 
-        <button type="submit">
-            Ingresar
-        </button>
-        
-    </form>
+                <!-- Enlaces al Módulo de Registro y Recuperación -->
+                <div class="text-center">
+                    <p class="mb-2">
+                        ¿No tienes una cuenta? 
+                        <a th:href="@{/registro/nuevo}" class="fw-bold text-decoration-none">Regístrate aquí</a>
+                    </p>
+                    <p class="mb-0">
+                        <a th:href="@{/registro/recordar}" class="text-muted small text-decoration-none">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
 
-</body>
+    </body>
 </html>

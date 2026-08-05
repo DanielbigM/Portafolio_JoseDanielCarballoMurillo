@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <head th:replace="~{general/fragmentos :: head}">
+        <title>TechShop</title>
+    </head>
+    <body>
+        <!-- Fragmento para el botón del carrito en la barra superior -->
+        <div th:fragment="verCarrito" id="resultsBlock">
+            <a th:href="@{/carrito/listado}" class="btn btn-primary position-relative">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="ms-1 d-none d-md-inline">Carrito</span>
+                <!-- Contador de ítems actualizado dinámicamente por AJAX -->
+                <span class="badge bg-danger rounded-pill" 
+                      th:text="${listaItems != null ? #lists.size(listaItems) : (session.carrito != null ? #lists.size(session.carrito) : 0)}">
+                    0
+                </span>
+            </a>
+        </div>
+
+        <!-- Fragmento para la tabla completa de items del carrito -->
+        <section th:fragment="listadoCarrito" class="container my-5">
+            <div class="row">
+                <div class="col-md-9">
+                    <h2><i class="fas fa-shopping-cart me-2"></i>Carrito de Compras</h2>
+                    <br/>
+                    <!-- Se cambió 'items' por 'carritoItems' -->
+                    <div th:if="${carritoItems != null and !#lists.isEmpty(carritoItems)}">
+                        <table class="table table-striped align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Total</th>
+                                    <th class="text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se itera sobre 'carritoItems' -->
+                                <tr th:each="item, i : ${carritoItems}">
+                                    <td th:text="${i.index + 1}">1</td>
+                                    <td th:text="${item.producto.descripcion}">Producto</td>
+                                    <td th:text="${'₡' + #numbers.formatDecimal(item.producto.precio, 1, 'POINT', 2, 'COMMA')}">₡0.00</td>
+                                    <td th:text="${item.cantidad}">1</td>
+                                    <td th:text="${'₡' + #numbers.formatDecimal(item.subTotal, 1, 'POINT', 2, 'COMMA')}">₡0.00</td>
+                                    <td class="text-center">
+                                        <form th:action="@{/carrito/eliminar/{id}(id=${item.producto.idProducto})}" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Carrito Vacío -->
+                    <div th:if="${carritoItems == null or #lists.isEmpty(carritoItems)}" class="text-center py-4">
+                        <h4>El carrito está vacío</h4>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card text-center bg-light">
+                        <div class="card-body">
+                            <h3>Total</h3>
+                            <!-- Se cambió 'carritoTotal' por 'totalCarrito' -->
+                            <h4 th:text="${totalCarrito != null ? '₡' + #numbers.formatDecimal(totalCarrito, 1, 'POINT', 2, 'COMMA') : '₡0.00'}">₡0.00</h4>
+                            <hr/>
+                            <a th:href="@{/}" class="btn btn-info w-100 mb-2">Seguir Comprando</a>
+                            <a th:href="@{/facturar/carrito}" class="btn btn-success w-100">Procesar Compra</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
