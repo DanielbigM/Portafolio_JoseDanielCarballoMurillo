@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <body>
+
+        <section th:fragment="asignar">
+            <!-- Tarjeta de Búsqueda -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fa fa-search"></i> Buscar Usuario</h5>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/usuario_rol/buscar}" method="GET" class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label for="usernameInput" class="form-label">Usuario / Username</label>
+                            <input type="text" id="usernameInput" name="username" class="form-control" required="true" placeholder="Ingrese el username..."/>
+                        </div>
+                        <div class="col-md-auto">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa fa-search"></i> Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Panel con Información y Roles del Usuario -->
+            <div class="row" th:if="${usuario != null and usuario.idUsuario != null}">
+                <!-- Columna Usuario -->
+                <div class="col-md-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-user-circle"></i> Perfil</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <img th:src="${usuario.rutaImagen}" alt="Imagen Usuario" class="img-fluid rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;"/>
+                            <ul class="list-group list-group-flush text-start">
+                                <li class="list-group-item"><strong>Usuario:</strong> <span th:text="${usuario.username}"></span></li>
+                                <li class="list-group-item"><strong>Nombre:</strong> <span th:text="${usuario.nombre + ' ' + usuario.apellidos}"></span></li>
+                                <li class="list-group-item"><strong>Correo:</strong> <span th:text="${usuario.correo}"></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Roles Asignados -->
+                <div class="card-body">
+                    <ul class="list-group" th:if="${usuario.roles != null and !usuario.roles.empty}">
+                        <li th:each="rol : ${usuario.roles}" 
+                            class="list-group-item d-flex justify-content-between align-items-center">
+                            <span th:text="${rol.nombre}">ROLE_ADMIN</span>
+
+                            <form th:action="@{/usuario_rol/eliminar}" method="POST" class="d-inline">
+                                <input type="hidden" name="idUsuario" th:value="${usuario.idUsuario}" />
+                                <input type="hidden" name="idRol" th:value="${rol.idRol}" />
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                    <p th:if="${usuario.roles == null or usuario.roles.empty}" class="text-muted text-center my-3">
+                        El usuario no posee roles.
+                    </p>
+                </div>
+
+                <!-- Columna Roles Disponibles -->
+                <div class="card-body">
+                    <ul class="list-group" th:if="${rolesDisponibles != null and !rolesDisponibles.empty}">
+                        <li th:each="rolDisponible : ${rolesDisponibles}" 
+                            class="list-group-item d-flex justify-content-between align-items-center">
+                            <span th:text="${rolDisponible}">ROLE_ADMIN</span>
+
+                            <form th:action="@{/usuario_rol/agregar}" method="POST" class="d-inline">
+                                <input type="hidden" name="idUsuario" th:value="${usuario.idUsuario}" />
+                                <input type="hidden" name="nombreRol" th:value="${rolDisponible}" />
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                    <p th:if="${rolesDisponibles == null or rolesDisponibles.empty}" class="text-muted text-center my-3">
+                        El usuario ya posee todos los roles disponibles.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </body>
+</html>

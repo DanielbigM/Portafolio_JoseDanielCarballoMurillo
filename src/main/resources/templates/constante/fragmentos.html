@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<body>
+
+    <!-- 1. Fragmento para Agregar Constante en Modal -->
+    <section th:fragment="agregar" class="py-4 mb-2 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarConstanteModal">
+                        <i class="fa-solid fa-plus"></i> [[#{constante.agregar}]]
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="agregarConstanteModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title"><i class="fa-solid fa-layer-group"></i> [[#{constante.agregar}]]</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{/constante/guardar}" th:object="${constante}" class="was-validated" method="post">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="atributo">[[#{constante.atributo}]]</label>
+                                <input type="text" class="form-control" name="atributo" required="true"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="valor">[[#{constante.valor}]]</label>
+                                <input type="text" class="form-control" name="valor" required="true"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="fa-solid fa-xmark"></i> [[#{accion.cerrar}]]
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-floppy-disk"></i> [[#{accion.guardar}]]
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Fragmento para Listado de Constantes -->
+    <section th:fragment="listado" class="container my-4">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h4><i class="fas fa-list"></i> Listado de Constantes</h4>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${constantes != null and !#lists.isEmpty(constantes)}">
+                            <table class="table table-striped align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Atributo</th>
+                                        <th>Valor</th>
+                                        <th text-center>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="c, i : ${constantes}">
+                                        <td th:text="${i.index + 1}">1</td>
+                                        <td th:text="${c.atributo}">atributo</td>
+                                        <td th:text="${c.valor}">valor</td>
+                                        <td class="text-center" sec:authorize="hasRole('ROLE_ADMIN')">
+                                            <form th:action="@{/constante/eliminar}" method="post" class="d-inline">
+                                                <input type="hidden" name="idConstante" th:value="${c.idConstante}"/>
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </button>
+                                            </form>
+                                            <a th:href="@{/constante/modificar/{id}(id=${c.idConstante})}" class="btn btn-success btn-sm ms-1">
+                                                <i class="fas fa-pencil"></i> Actualizar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:if="${constantes == null or #lists.isEmpty(constantes)}" class="text-center py-3">
+                            <span>No hay constantes registradas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-primary text-white mb-3">
+                    <div class="card-body">
+                        <h3>Total Constantes</h3>
+                        <h4 class="display-6"><i class="fas fa-cog"></i> [[${totalConstantes}]]</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Fragmento Editar -->
+    <section th:fragment="editar" class="container my-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4><i class="fas fa-edit"></i> Modificar Constante</h4>
+                    </div>
+                    <form th:action="@{/constante/guardar}" th:object="${constante}" method="post" class="was-validated">
+                        <div class="card-body">
+                            <input type="hidden" th:field="*{idConstante}"/>
+                            <input type="hidden" th:field="*{fechaCreacion}"/>
+
+                            <div class="mb-3">
+                                <label for="atributo">Atributo</label>
+                                <input type="text" class="form-control" th:field="*{atributo}" required="true"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="valor">Valor</label>
+                                <input type="text" class="form-control" th:field="*{valor}" required="true"/>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <a th:href="@{/constante/listado}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Regresar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

@@ -2,7 +2,11 @@ package TechShop.JoseDaniel.domain;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@Data // <--- Importante para generar getters/setters y aplicar las exclusiones
 @Entity
 @Table(name = "rol")
 public class Rol implements Serializable {
@@ -11,23 +15,14 @@ public class Rol implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_rol")
     private Long idRol;
 
     private String nombre;
 
-    public Long getIdRol() {
-        return idRol;
-    }
-
-    public void setIdRol(Long idRol) {
-        this.idRol = idRol;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    @ToString.Exclude         
+    @EqualsAndHashCode.Exclude 
+    private Usuario usuario;
 }

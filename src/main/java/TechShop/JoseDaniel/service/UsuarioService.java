@@ -130,4 +130,44 @@ public class UsuarioService {
         usuario.getRoles().add(rol);
         return usuarioRepository.save(usuario);
     }
+
+    // Método para obtener la lista de todos los nombres de roles en el sistema
+    @Transactional(readOnly = true)
+    public List<String> getRolesNombres() {
+        return List.of("ROLE_ADMIN", "ROLE_VENDEDOR", "ROLE_USER");
+    }
+
+    // Método para eliminar/revocar un rol de un usuario
+    @Transactional
+    public Usuario eliminarRol(String username, Integer idRol) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
+        if (usuarioOpt.isEmpty()) {
+            throw new RuntimeException("Usuario no encontrado: " + username);
+        }
+        Usuario usuario = usuarioOpt.get();
+
+        usuario.getRoles().removeIf(rol -> rol.getIdRol().equals(idRol));
+
+        return usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public void asignarRol(Long idUsuario, String nombreRol) {
+        Usuario usuario = usuarioRepository.findById(idUsuario.intValue()).orElse(null);
+        if (usuario != null) {
+            Rol nuevoRol = new Rol();
+            nuevoRol.setNombre(nombreRol);
+            nuevoRol.setUsuario(usuario);
+            rolRepository.save(nuevoRol);
+        }
+    }
+
+    @Transactional
+    public void eliminarRol(Long idUsuario, Long idRol) {
+        Usuario usuario = usuarioRepository.findById(idUsuario.intValue()).orElse(null);
+        if (usuario != null) {
+            usuario.getRoles().removeIf(rol -> rol.getIdRol().equals(idRol));
+            usuarioRepository.save(usuario);
+        }
+    }
 }

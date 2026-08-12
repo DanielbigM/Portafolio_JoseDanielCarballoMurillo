@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -15,17 +17,19 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    private Long idUsuario; // O Integer según tu base de datos
+    private Long idUsuario;
 
     private String username;
     private String password;
     private String nombre;
     private String apellidos;
     private String correo;
-    private String rutaImagen; // Getter y Setter deben existir
+    private String rutaImagen;
     private boolean activo;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER) // <--- Carga los roles inmediatamente en la autenticación
     @JoinColumn(name = "id_usuario")
-    private List<Rol> roles;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Rol> roles;    
 }
